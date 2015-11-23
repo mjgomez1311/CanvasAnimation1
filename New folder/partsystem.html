@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+
+ <meta charset="utf-8">
+ <style>
+canvas {
+ border: 1px solid black;;
+}
+</style>
+ <script>
+ var canvas;
+ var context;
+ var particles;
+ var timer;
+ var timerRestart;
+
+
+
+ function makeParticles() {
+
+	particles = [];
+	for(var i = 0; i < 100; i++)
+	{
+		particles.push(new Particle());
+	}
+ 
+ }
+
+ function degreesToRadians(degrees) {
+	
+	 return (degrees * Math.PI)/270;
+ }
+ function Particle()
+ {
+	
+	
+	 this.x = canvas.width/2;
+	 this.y = canvas.height/2;
+	 this.vx = Math.random()*10-5;
+	 this.vy = Math.random()*10-5;
+	 var colors = ["red", "green", "blue", "orange", "purple", "yellow", "white"];
+	 this.color = colors[Math.floor(Math.random()*colors.length)];
+	 this.radius = 30;
+ }
+
+ function moveParticles() {
+	
+	 context.globalCompositeOperation = "source-over";
+	 context.fillStyle = "rgba(0, 0, 0, 0.3)";
+	 context.fillRect(0, 0, canvas.width, canvas.height);
+	 context.globalCompositeOperation = "color-dodge";
+	 context.font = "30px Arial";
+	 context.fillText("Yay!",10,50);
+	  context.fillText("You rock!",5,25);
+	   context.fillText("Awesome Sauce",50,10);
+	 for(var i = 0; i < particles.length; i++)
+	 {
+		 var p = particles[i];
+		 context.beginPath();
+		 context.arc(p.x, p.y, p.radius, 0, degreesToRadians(360), true);
+		 context.fillStyle = p.color;
+		 context.fill();
+		 p.x += p.vx;
+		 p.y += p.vy;
+		 if(p.x < -50) p.x = canvas.width+50;
+		 if(p.y < -50) p.y = canvas.height+50;
+		 if(p.x > canvas.width+50) p.x = -50;
+		 if(p.y > canvas.height+50) p.y = -50;
+		 p.radius -= 1;
+	 }
+	 
+	 
+ }
+
+ function clearScreen(color) {
+	
+	 context.clearRect(0, 0, canvas.width, canvas.height);
+	 context.fillStyle = color;
+	 context.fillRect(0, 0, canvas.width, canvas.height);
+	
+ }
+ window.onload = function() {
+ 	 canvas = document.getElementById('canvas');
+	 context = canvas.getContext('2d');
+	 makeParticles();
+	 timer = setInterval(moveParticles, 100);
+	 timerRestart = setInterval(makeParticles, 4500)
+	 
+	 
+}
+
+</script>
+</head>
+<body>
+	<canvas id="canvas" width="500" height="400"></canvas>
+
+</body>
+ </html>
